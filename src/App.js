@@ -1,24 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
-import d3 from "d3";
-import {useEffect, useRef} from "react";
+import responseData from "./utils/readingCSV";
+import React, {useEffect, useState} from "react";
+import {TopSoldVideoGames} from "./components/TopSoldVideoGames";
+import formatData from "./utils/formatData";
+import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+
 function App() {
+    const [data, setData] = useState("");
+    const [yearList,setYearList] = useState([]);
+    const [year,setYear] = useState("");
+    useEffect(() => {
+        if (data !== "") {
+            return
+        }
 
-  const Circle = () =>{
-    const ref = useRef();
+        let [formattedData,years] = formatData(responseData);
+        setData(formattedData)
+        setYearList(years);
+    }, [data])
 
-    useEffect(()=>{
-      const svgElement = d3.select(ref.current)
-      svgElement.append("circle").attr("cx",150).attr("cy",70).attr("r",50)
-    },[])
 
-    return <svg ref={ref}>
-    </svg>
-  }
+    function handleChange(e) {
+        setYear(e.target.value)
+    }
+    return (
+        <React.Fragment>
+            <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Year</InputLabel>
+                <Select
+                    labelId="demo-simple-select-autowidth-label"
+                    id="demo-simple-select-autowidth"
+                    value={year}
+                    onChange={handleChange}
+                    autoWidth
+                    label="Year"
+                >
+                    <MenuItem value="">
+                        <em>None</em>
+                    </MenuItem>
+                    {yearList.map((yearElement,index)=>{
+                        return <MenuItem key={index} value={yearElement}>{yearElement}</MenuItem>
+                    })}
+                </Select>
+            </FormControl>
+            <TopSoldVideoGames year={year}/>
 
-  return (
-   <Circle/>
-  );
+        </React.Fragment>);
 }
 
 export default App;
