@@ -48,8 +48,7 @@ export default function Histogram({data, label, type}) {
             .style('opacity', 0);
 
 
-        svg
-            .selectAll('rect')
+        svg.selectAll('rect')
             .data(salesData)
             .enter()
             .append('rect')
@@ -58,31 +57,26 @@ export default function Histogram({data, label, type}) {
             .attr('width', xScale.bandwidth())
             .attr('height', (d) => yScale(0) - yScale(d.totalSales))
             .attr('fill', 'steelblue').on('mouseover', (event, d) => {
-            // Show the tooltip on mouseover
             tooltip.transition().duration(200).style('opacity', 0.9);
             tooltip.html(`${type}: ${d[type]}<br>${Sales[label]}: ${d.totalSales.toFixed(2)} (million)`)
                 .style('left', `${event.pageX}px`)
                 .style('top', `${event.pageY}px`);
-        })
-            .on('mouseout', () => {
-                // Hide the tooltip on mouseout
+            }).on('mouseout', () => {
                 tooltip.transition().duration(500).style('opacity', 0);
             });
-        ;
 
-        // Create x-axis
         const xAxis = d3.axisBottom(xScale);
 
         if (salesData.length > 20) {
             xAxis.tickValues([])
         }
+
         svg
             .append('g')
             .attr('class', 'x-axis')
             .attr('transform', `translate(0,0)`)
             .call(xAxis);
 
-        // Create y-axis
         const yAxis = d3.axisLeft(yScale);
         svg
             .append('g')
@@ -90,11 +84,11 @@ export default function Histogram({data, label, type}) {
             .attr('transform', `translate(${margin.left},0)`)
             .call(yAxis);
 
-    }, [data])
+    }, [data,label,type])
 
 
-    return <div className={"container"} style={{width: "auto"}}>
-        <label style={{margin: "auto"}}>This is the {Sales[label]} histogram</label>
+    return <div className={"container"} style={{width: "auto",textAlign:"center"}}>
+        <h1 style={{margin: "auto"}}>This is the {Sales[label]} histogram</h1>
         <div ref={tooltipRef}></div>
 
         <svg ref={ref} className={label}></svg>
