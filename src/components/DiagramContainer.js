@@ -2,16 +2,17 @@ import React, {useEffect, useState} from "react";
 import {Box, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {getDataForDiagram} from "../utils/getDataForDiagram";
 import Histogram from "./histogram/Histogram";
-import CircleDiagram from "./circleDiagram/CircleDiagram";
+import Diagrams from "./Diagrams";
+import MultiLineDiagram from "./multiLine/MultiLineDiagram";
 
-export function TopSoldVideoGames({yearList, data}) {
+export function DiagramContainer({yearList, data, isMultiLine = false}) {
     const [year, setYear] = useState("----");
     const [type, setType] = useState("----");
-    const [diagramType,setDiagramType] = useState("Histogram")
+    const [diagramType, setDiagramType] = useState("Histogram")
     const [displayData, setDisplayData] = useState([]);
 
     useEffect(() => {
-        setDisplayData(getDataForDiagram(data, year, type))
+        setDisplayData(getDataForDiagram(data, isMultiLine, year, type))
     }, [year, type])
 
     function handleChangeYear(e) {
@@ -21,6 +22,7 @@ export function TopSoldVideoGames({yearList, data}) {
     function handleDiagramChange(e) {
         setDiagramType(e.target.value)
     }
+
     function handleChangeType(e) {
         setType(e.target.value)
     }
@@ -60,9 +62,9 @@ export function TopSoldVideoGames({yearList, data}) {
                         <MenuItem value="----">
                             <em>None</em>
                         </MenuItem>
-                        <MenuItem value="Name">
+                        {!isMultiLine && <MenuItem value="Name">
                             <em>VideoGame</em>
-                        </MenuItem>
+                        </MenuItem>}
                         <MenuItem value="Publisher">
                             <em>Publisher</em>
                         </MenuItem>
@@ -76,7 +78,7 @@ export function TopSoldVideoGames({yearList, data}) {
 
                 </FormControl>
             </Box>
-            <Box style={{margin: "15px"}}>
+            {!isMultiLine && <Box style={{margin: "15px"}}>
                 <FormControl>
                     <InputLabel id="diagram-select-label">DiagramType</InputLabel>
                     <Select
@@ -98,25 +100,9 @@ export function TopSoldVideoGames({yearList, data}) {
                     </Select>
 
                 </FormControl>
-            </Box>
+            </Box>}
         </div>
-        {displayData.length && <div className={"graphs"} style={{width:"100%",display: "flex",flexWrap:"wrap", justifyContent:"space-between"}}>
-            <Box id={"eu"}>
-                {diagramType === "Histogram" ?<Histogram data={displayData} label={"EU_Sales"} type={type!=='----'?type:"Publisher"}/>: diagramType ==="Circle" ?
-                <CircleDiagram data={displayData} label={"EU_Sales"} type={type!=='----'?type:"Publisher"}/>:"még semmi"}
-            </Box>
-            <Box id={"na"}>
-                {diagramType === "Histogram" ?<Histogram data={displayData} label={"NA_Sales"} type={type!=='----'?type:"Publisher"}/>:  diagramType ==="Circle" ?
-                    <CircleDiagram data={displayData} label={"NA_Sales"} type={type!=='----'?type:"Publisher"}/>:"még semmi"}
-            </Box>
-            <Box id={"jp"}>
-                {diagramType === "Histogram" ?<Histogram data={displayData} label={"JP_Sales"} type={type!=='----'?type:"Publisher"}/>:  diagramType ==="Circle" ?
-                    <CircleDiagram data={displayData} label={"JP_Sales"} type={type!=='----'?type:"Publisher"}/>:"még semmi"}
-            </Box>
-            <Box id={"global"}>
-                {diagramType === "Histogram" ?<Histogram data={displayData} label={"Global_Sales"} type={type!=='----'?type:"Publisher"}/>:  diagramType ==="Circle" ?
-                    <CircleDiagram data={displayData} label={"Global_Sales"} type={type!=='----'?type:"Publisher"}/>:"még semmi"}
-            </Box>
-        </div>}
+        {displayData.length && !isMultiLine && <Diagrams displayData={displayData} type={type} diagramType={diagramType}/>}
+        {displayData.length && isMultiLine && <MultiLineDiagram displayData={displayData} type={type} diagramType={diagramType}/>}
     </div>
 }
