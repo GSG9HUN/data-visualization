@@ -13,7 +13,7 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
 
     useEffect(() => {
         setDisplayData(getDataForDiagram(data, isMultiLine, year, type))
-    }, [year, type])
+    }, [year])
 
     function handleChangeYear(e) {
         setYear(e.target.value)
@@ -24,6 +24,7 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
     }
 
     function handleChangeType(e) {
+        setDisplayData(getDataForDiagram(data, isMultiLine, year, e.target.value))
         setType(e.target.value)
     }
 
@@ -103,6 +104,6 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
             </Box>}
         </div>
         {displayData.length && !isMultiLine && <Diagrams displayData={displayData} type={type} diagramType={diagramType}/>}
-        {displayData.length && isMultiLine && <MultiLineDiagram displayData={displayData} type={type} diagramType={diagramType}/>}
+        {displayData.values && isMultiLine && type !== "----" && <MultiLineDiagram displayData={displayData} type={type} diagramType={diagramType}/>}
     </div>
 }
