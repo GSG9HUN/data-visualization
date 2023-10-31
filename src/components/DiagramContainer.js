@@ -97,6 +97,9 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
                         <MenuItem value={"StackDiagram"}>
                             <em>Stack diagram</em>
                         </MenuItem>
+                        <MenuItem value={"CumulativeDiagram"}>
+                            <em>Cumulative diagram</em>
+                        </MenuItem>
                     </Select>
 
                 </FormControl>
