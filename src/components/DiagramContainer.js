@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Box, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {getDataForDiagram} from "../utils/getDataForDiagram";
-import Histogram from "./histogram/Histogram";
 import Diagrams from "./Diagrams";
 import MultiLineDiagram from "./multiLine/MultiLineDiagram";
 
@@ -50,7 +49,7 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
                     </Select>
                 </FormControl>
             </Box>
-            <Box style={{margin: "15px"}}>
+            {diagramType !== "StackDiagram" && <Box style={{margin: "15px"}}>
                 <FormControl>
                     <InputLabel id="type-select-label">Type</InputLabel>
                     <Select
@@ -78,7 +77,7 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
                     </Select>
 
                 </FormControl>
-            </Box>
+            </Box>}
             {!isMultiLine && <Box style={{margin: "15px"}}>
                 <FormControl>
                     <InputLabel id="diagram-select-label">DiagramType</InputLabel>
@@ -95,8 +94,8 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
                         <MenuItem value={"Circle"}>
                             <em>Circle diagram</em>
                         </MenuItem>
-                        <MenuItem value={"3"}>
-                            <em>valami még</em>
+                        <MenuItem value={"StackDiagram"}>
+                            <em>Stack diagram</em>
                         </MenuItem>
                     </Select>
 
