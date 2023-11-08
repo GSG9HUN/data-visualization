@@ -2,7 +2,6 @@ import React, {useEffect, useMemo, useRef} from 'react';
 import * as d3 from "d3";
 
 export default function StackDiagram({data, type}) {
-
     const tooltipRef = useRef();
     const colors = useMemo(() => {
         return {"EU_Sales": "#888888", "NA_Sales": "#BF3EFF", "JP_Sales": "#00BFFF"}

@@ -10,7 +10,6 @@ export default function MultiLineDiagram({displayData, type}) {
 
     const svgRef = useRef();
     const [displayedLines, setDisplayedLines] = useState([])
-
     useEffect(() => {
         generateRandomColors();
 

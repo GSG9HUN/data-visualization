@@ -87,7 +87,7 @@ export default function Histogram({data, label, type}) {
     }, [data,label,type])
 
 
-    return <div className={"container"} style={{width: "auto",textAlign:"center"}}>
+    return <div className={"container"} style={{width: "50%",textAlign:"center"}}>
         <h1 style={{margin: "auto"}}>This is the {Sales[label]} histogram</h1>
         <div ref={tooltipRef}></div>
 

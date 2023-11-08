@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Box, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
-import {getDataForDiagram} from "../utils/getDataForDiagram";
+import {getDataForDiagram, getDataForStackAreaDiagram} from "../utils/getDataForDiagram";
 import Diagrams from "./Diagrams";
 import MultiLineDiagram from "./multiLine/MultiLineDiagram";
 
@@ -19,6 +19,14 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
     }
 
     function handleDiagramChange(e) {
+        if(e.target.value==="StackAreaDiagram"){
+            const euData = getDataForStackAreaDiagram(data,"EU_Sales");
+            const naData = getDataForStackAreaDiagram(data,"NA_Sales");
+            const jpData = getDataForStackAreaDiagram(data,"JP_Sales");
+            setDisplayData([{"EU_Sales":euData},{"NA_Sales":naData},{"JP_Sales":jpData}]);
+        }else{
+            setDisplayData(getDataForDiagram(data, isMultiLine, "----", "----"))
+        }
         setDiagramType(e.target.value)
     }
 
@@ -29,7 +37,7 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
 
     return <div className={"container"}>
         <div style={{display: "flex"}}>
-            <Box style={{margin: "15px"}}>
+            {diagramType!== "StackAreaDiagram"&&<Box style={{margin: "15px"}}>
                 <FormControl>
                     <InputLabel id="year-select-label">Year</InputLabel>
                     <Select
@@ -48,8 +56,8 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
                         })}
                     </Select>
                 </FormControl>
-            </Box>
-            {diagramType !== "StackDiagram" && <Box style={{margin: "15px"}}>
+            </Box>}
+            {diagramType !== "StackDiagram" && diagramType!== "StackAreaDiagram"&& <Box style={{margin: "15px"}}>
                 <FormControl>
                     <InputLabel id="type-select-label">Type</InputLabel>
                     <Select
@@ -99,6 +107,9 @@ export function DiagramContainer({yearList, data, isMultiLine = false}) {
                         </MenuItem>
                         <MenuItem value={"CumulativeDiagram"}>
                             <em>Cumulative diagram</em>
+                        </MenuItem>
+                        <MenuItem value={"StackAreaDiagram"}>
+                            <em>Stack area diagram</em>
                         </MenuItem>
                     </Select>
 
