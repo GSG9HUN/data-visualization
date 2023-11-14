@@ -9,6 +9,7 @@ function App() {
     const [data, setData] = useState("");
     const [isVisualization,setVisualization] = useState(false);
     const [isMultiLineDiagram,setMultiLineDiagram] = useState(false);
+    const [isDependingOnPop,setDependingOnPop] = useState(false);
     const [columns,setColumns] = useState("")
     const [yearList,setYearList] = useState([]);
 
@@ -27,16 +28,22 @@ function App() {
     return (
         <React.Fragment>
             {(!isVisualization && !isMultiLineDiagram) && <RenderDataTable columns={columns} data={data}></RenderDataTable>}
-            <div style={{display:"flex",justifyContent:"center", margin:"10px"}}>
+            <div style={{display:"flex",justifyContent:"normal", margin:"10px"}}>
                 {!isMultiLineDiagram && <Button style={{margin: "auto"}} variant={"outlined"}
                          onClick={() => setVisualization(!isVisualization)}>{!isVisualization ? "Visualize this data." : "See the data again."}</Button>
                 }
-                {!isVisualization && <Button style={{margin: "auto"}} variant={"outlined"}
+                {!isVisualization && !isDependingOnPop && <Button style={{margin: "auto"}} variant={"outlined"}
                                                 onClick={() => setMultiLineDiagram(!isMultiLineDiagram)}>{!isMultiLineDiagram ? "Visualize this data in multi line diagram." : "See the data again."}</Button>
+                }
+                {!isVisualization && <Button style={{margin: "auto"}} variant={"outlined"}
+                                             onClick={() => {
+                                                 setMultiLineDiagram(!isMultiLineDiagram)
+                                                 setDependingOnPop(!isDependingOnPop)
+                                             }}>{!isMultiLineDiagram ? "Multi line diagram depending on population." : "See the data again."}</Button>
                 }
             </div>
             {isVisualization && <DiagramContainer yearList={yearList} data={data}/>}
-            {isMultiLineDiagram && <DiagramContainer data={data} yearList={yearList} isMultiLine={true}/>}
+            {isMultiLineDiagram && <DiagramContainer data={data} yearList={yearList} isMultiLine={true} isDependingOnPop={isDependingOnPop}/>}
 
         </React.Fragment>);
 }
