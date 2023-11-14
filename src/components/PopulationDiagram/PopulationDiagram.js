@@ -413,7 +413,6 @@ export default function PopulationDiagram ({displayData,type}) {
         }
     }
     return <div style={{textAlign:"center"}}>
-        <h1>Global sales multiline diagram for {type}</h1>
         <div className={"lines"} style={{display:"flex",justifyContent:"center",flexWrap:"wrap"}}>
             {colors.length > 0 && displayedLines.map((displayedLine,index)=>{
                 return <div key={index} style={{marginLeft:10,marginRight:10}}>
